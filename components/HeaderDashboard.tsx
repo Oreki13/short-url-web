@@ -1,5 +1,5 @@
 import { Menu, Transition } from '@headlessui/react'
-import { removeCookies } from 'cookies-next'
+import { deleteCookie } from 'cookies-next'
 import { useRouter } from 'next/router'
 import React, { FC } from 'react'
 
@@ -10,7 +10,7 @@ interface HeaderParam {
 const HeaderDashboard: FC<HeaderParam> = ({ title }) => {
     const router = useRouter()
     const logout = () => {
-        removeCookies('token')
+        deleteCookie('token')
         router.push('/login')
     }
     return (

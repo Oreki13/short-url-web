@@ -4,17 +4,13 @@ import { TextInput } from '@/components/TextInput'
 import { useEffect, useRef, useState } from 'react'
 import Auth from '@/lib/provider/auth'
 import useSWRMutation from 'swr/mutation'
-import { ApiResponse } from '@/helper/apiResponseStruct'
+import {ApiResponse, LoginResponse} from '@/helper/apiResponseStruct'
 import { useRouter } from 'next/router'
-import { hasCookie, removeCookies, setCookie } from 'cookies-next'
+import { hasCookie, deleteCookie, setCookie } from 'cookies-next'
 import ApiEndpoint from '@/lib/helpers/api_endpoint'
 
 const inter = Inter({ subsets: ['latin'] })
 
-type Modify<T, R> = Omit<T, keyof R> & R;
-type LoginResponse = Modify<ApiResponse, {
-    data: { token: string } | null
-}>
 
 
 export default function Home() {
@@ -35,7 +31,7 @@ export default function Home() {
         const resData: LoginResponse = await trigger({ email: email, password: password })
         if (resData != null) {
             if (resData.status === 'OK') {
-                setCookie('token', resData.data?.token)
+                setCookie('token', resData.data)
                 router.push('/')
             } else {
                 if (resData.code === "USER_UNREGISTERED") {
@@ -56,7 +52,7 @@ export default function Home() {
             if (resData.status === "OK") {
                 router.push('/')
             } else {
-                removeCookies('token')
+                deleteCookie('token')
             }
         }
     }

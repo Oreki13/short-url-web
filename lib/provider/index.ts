@@ -1,7 +1,10 @@
-import { getCookie } from "cookies-next";
+import {getCookie} from "cookies-next";
 import jwt from 'jsonwebtoken'
 
-const Fetcher = (args: string, init: RequestInit | undefined) => fetch(args, init).then(r => r.json())
+const Fetcher = (args: string, init: RequestInit | undefined) => fetch(args, init)
+    .then(r => r.json())
+    .catch(e => e);
+
 const DefaultHeader = () => {
     const token = getCookie('token')?.toString()
     const jwtData: any = jwt.decode(token!)
@@ -13,5 +16,4 @@ const DefaultHeader = () => {
 }
 
 
-
-export { Fetcher, DefaultHeader };
+export {Fetcher, DefaultHeader};

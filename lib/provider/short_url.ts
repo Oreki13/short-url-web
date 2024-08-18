@@ -1,15 +1,19 @@
-import { GetListShortUrlResponse } from "@/helper/apiResponseStruct"
-import { DefaultHeader, Fetcher } from './index'
+import {GetListShortUrlResponse} from "@/helper/apiResponseStruct"
+import {DefaultHeader, Fetcher} from './index'
 
 const ShortUrlProvider = {
-    getData: async (url: string, page: number, limit: number): Promise<GetListShortUrlResponse> => {
-        return Fetcher(url + '?page=' + page + '&limit=' + limit, {
+    getData: async (url: string): Promise<GetListShortUrlResponse> => {
+
+        return Fetcher(url, {
             method: "GET",
-            headers: DefaultHeader()
-        }).then((v) => {
-            return v
-        }).catch(e => console.log(e)
-        )
+            headers: {
+                ...DefaultHeader(),
+                "Content-Type": "application/json",
+                "Accept": "application/json",
+            }
+        })
+            .then((v) => v)
+            .catch(e => console.log(e));
     }
 }
 

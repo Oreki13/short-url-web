@@ -13,8 +13,9 @@ const defaultResponse: ApiResponse = {
 }
 
 type Modify<T, R> = Omit<T, keyof R> & R;
+
 type LoginResponse = Modify<ApiResponse, {
-    data: { token: string } | null
+    data:string  | null
 }>
 
 type GetListShortUrlResponse = Modify<ApiResponse, {
@@ -22,10 +23,8 @@ type GetListShortUrlResponse = Modify<ApiResponse, {
 }>
 
 type PageShortUrlData = {
-    page: number,
-    total: number,
-    last_page: number,
-    datas: Array<ShortUrlData>
+    data: Array<ShortUrlData>,
+    paging: PagingData,
 }
 
 type ShortUrlData = {
@@ -40,6 +39,13 @@ type ShortUrlData = {
     updatedAt: Date
 }
 
+type PagingData = {
+    current_page: number,
+    total_page: number,
+    size: number,
+    total_data: number
+}
+
 
 export { defaultResponse };
-export type { ApiResponse, LoginResponse, GetListShortUrlResponse };
+export type { ApiResponse, LoginResponse, GetListShortUrlResponse, PagingData };
