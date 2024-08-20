@@ -1,5 +1,5 @@
-import HeaderDashboard from '@/components/HeaderDashboard'
-import { TextInput } from '@/components/TextInput'
+import HeaderDashboard from '@/components/headerDashboard'
+import { TextInput } from '@/components/textInput'
 import HeadHtml from '@/components/headHtml'
 import { Inter } from 'next/font/google'
 import React from 'react'

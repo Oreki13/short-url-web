@@ -1,19 +1,21 @@
 import { Inter } from 'next/font/google'
 import HeadHtml from '@/components/headHtml'
-import HeaderDashboard from '@/components/HeaderDashboard'
+import HeaderDashboard from '@/components/headerDashboard'
 import ShortUrlProvider from '@/lib/provider/short_url'
 import useSWR from 'swr'
 import ApiEndpoint from '@/lib/helpers/api_endpoint'
-import { CardDashboardShortLink } from '@/components/card_dashboard_short_link'
+import { CardDashboardShortLink } from '@/components/cardDashboardShortLink'
 import { useEffect, useState } from 'react'
 import { useRouter } from 'next/router'
 import { hasCookie } from 'cookies-next'
 import dayjs from 'dayjs'
-import ModalAddLink from '@/components/modal_add_link'
+import ModalAddLink from '@/components/modalAddLink'
+import {NextPage} from "next";
 
 const inter = Inter({ subsets: ['latin'] })
 
-export default function Home() {
+
+const Home:NextPage = () => {
   const { data, error, isLoading } = useSWR(ApiEndpoint.listShortUrl, (url) => ShortUrlProvider.getData(url, 1, 5), {
     revalidateIfStale: false,
     revalidateOnFocus: false,
@@ -39,6 +41,7 @@ export default function Home() {
   }, [data])
 
   const checkToken = () => {
+    console.log("CHECK TOKEN")
     const hasToken = hasCookie('token')
     if (!hasToken) {
       router.replace('/login')
@@ -118,3 +121,5 @@ export default function Home() {
     </>
   )
 }
+
+export default Home;

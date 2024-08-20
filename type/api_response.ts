@@ -1,11 +1,11 @@
-type ApiResponse = {
+type Api_response = {
     status: "OK" | "ERROR",
     code: string | null,
     message: string | null,
     data: any
 }
 
-const defaultResponse: ApiResponse = {
+const defaultResponse: Api_response = {
     status: "OK",
     code: null,
     message: null,
@@ -13,11 +13,11 @@ const defaultResponse: ApiResponse = {
 }
 
 type Modify<T, R> = Omit<T, keyof R> & R;
-type LoginResponse = Modify<ApiResponse, {
+type LoginResponse = Modify<Api_response, {
     data: { token: string } | null
 }>
 
-type GetListShortUrlResponse = Modify<ApiResponse, {
+type GetListShortUrlResponse = Modify<Api_response, {
     data: PageShortUrlData
 }>
 
@@ -42,4 +42,4 @@ type ShortUrlData = {
 
 
 export { defaultResponse };
-export type { ApiResponse, LoginResponse, GetListShortUrlResponse };
+export type { Api_response, LoginResponse, GetListShortUrlResponse };

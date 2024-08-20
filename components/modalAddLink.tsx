@@ -1,6 +1,6 @@
 import React, { FC } from 'react'
-import { TextInput } from './TextInput'
-import ModalIndex from './index_modal'
+import { TextInput } from './textInput'
+import ModalIndex from './indexModal'
 
 type ParamModalAddLink = {
     isOpen: boolean

@@ -1,8 +1,8 @@
-import { DefaultHeader } from ".";
+import {DefaultHeader} from ".";
 
 const Auth = {
 
-    login: async (url: string, { arg }: { arg: { email: string, password: string } }) => {
+    login: async (url: string, {arg}: { arg: { email: string, password: string } }) => {
         return fetch(url, {
             method: 'POST',
             body: JSON.stringify(arg),
@@ -12,6 +12,7 @@ const Auth = {
             }
         }).then(res => res.json()).catch((e) => {
             console.log(e);
+            console.log("ASDKAOSIDJAS");
         })
     },
     verify: async (url: string) => {
