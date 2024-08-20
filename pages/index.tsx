@@ -5,9 +5,10 @@ import {CardDashboardShortLink} from '@/components/card_dashboard_short_link'
 import {useEffect, useState} from 'react'
 import dayjs from 'dayjs'
 import ModalAddLink from '@/components/modal_add_link'
-import {useCheckToken} from "@/lib/hooks/useCheckToken";
-import {useFetchListShortUrl} from "@/lib/hooks/useFetchListShortUrl";
+import {useCheckToken} from "@/hooks/useCheckToken";
+import {useFetchListShortUrl} from "@/hooks/useFetchListShortUrl";
 import {PaginateSection} from "@/components/PaginateSection";
+import {useCheckUserLogin} from "@/hooks/useCheckUserLogin";
 
 const inter = Inter({subsets: ['latin']})
 
@@ -21,11 +22,7 @@ export default function Home() {
         console.log(`Current page: ${currentPage}`)
     }
 
-    useEffect(() => {
-        console.log("USE EFFECT")
-        useCheckToken();
-    }, []);
-
+    useCheckUserLogin()
     return (
         <>
             <HeadHtml title='Dashboard'/>
@@ -55,7 +52,6 @@ export default function Home() {
 
 const ContentHome = (page: number, handleChangePage: (toPage: number) => void) => {
     const {data, error, isLoading} = useFetchListShortUrl(page, 5);
-    console.log(`Content home page: ${page}`)
 
     if (isLoading) return <p>Loading</p>
     if (error) return <p>Error</p>

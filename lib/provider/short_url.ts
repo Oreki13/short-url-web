@@ -1,4 +1,4 @@
-import {GetListShortUrlResponse} from "@/helper/apiResponseStruct"
+import {GetListShortUrlResponse} from "@/type/ApiResponse"
 import {DefaultHeader, Fetcher} from './index'
 
 const ShortUrlProvider = {

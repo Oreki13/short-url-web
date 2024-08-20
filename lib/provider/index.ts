@@ -11,7 +11,7 @@ const DefaultHeader = () => {
 
     return {
         "authorization": "Bearer " + token,
-        "x-control-user": jwtData.id
+        "x-control-user": jwtData === null ? "" : jwtData.id
     }
 }
 

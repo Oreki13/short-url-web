@@ -1,5 +1,5 @@
 import {FC} from "react";
-import {PagingData} from "@/helper/apiResponseStruct";
+import {PagingData} from "@/type/ApiResponse";
 
 type ParamPaginateSection = {
     page: number
