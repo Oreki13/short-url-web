@@ -22,10 +22,10 @@ export const TextInput: FC<TextInputParam> = ({
         <Field className='flex flex-col items-start w-full'>
             <Label className="text-sm/6 font-semibold ">{label}</Label>
             <Input
-                {...register(label)}
+                {...register(name !== undefined ? name : label)}
                 type={type}
                 className={clsx(
-                    'mt-3 block w-full rounded-lg border-blue-200 bg-black/10 py-1.5 px-3 text-sm/6 text-black',
+                    label.length > 0 ? "mt-3" : "mt-0", 'block w-full rounded-lg border-blue-200 bg-black/10 py-1.5 px-3 text-sm/6 text-black',
                     'focus:outline-none data-[focus]:outline-2 data-[focus]:-outline-offset-2 data-[focus]:outline-black/25'
                 )}
             />

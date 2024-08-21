@@ -4,7 +4,7 @@ import HeaderDashboard from '@/components/HeaderDashboard'
 import {CardDashboardShortLink} from '@/components/card_dashboard_short_link'
 import {useEffect, useState} from 'react'
 import dayjs from 'dayjs'
-import ModalAddLink from '@/components/modal_add_link'
+import ModalAddLink from '@/components/ModalAddLink'
 import {useCheckToken} from "@/hooks/useCheckToken";
 import {useFetchListShortUrl} from "@/hooks/useFetchListShortUrl";
 import {PaginateSection} from "@/components/PaginateSection";
@@ -55,7 +55,7 @@ const ContentHome = (page: number, handleChangePage: (toPage: number) => void) =
 
     if (isLoading) return <p>Loading</p>
     if (error) return <p>Error</p>
-    if (data === undefined && data!.status !== "ERROR") return <p>Data is undefined</p>
+    if (data === undefined || data.data === undefined || data!.status == "ERROR") return <p>Data is undefined</p>
 
     return (
         <>

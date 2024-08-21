@@ -8,7 +8,7 @@ export const useFetchListShortUrl = (page: number, limit: number) => {
         data,
         isLoading,
         error
-    } = useSWR(ApiEndpoint.listShortUrl + '?page=' + page + '&limit=' + limit, (url) => ShortUrlProvider.getData(url), {keepPreviousData:true})
+    } = useSWR(ApiEndpoint.short + '?page=' + page + '&limit=' + limit, (url) => ShortUrlProvider.getData(url), {keepPreviousData:true})
     if (data !== undefined) {
         if (data.status === 'ERROR') {
             if (data.code === "TOKEN_EXPIRED" || data.code === "INVALID_TOKEN" || data.code === "INVALID_USER_TOKEN") {
