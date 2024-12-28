@@ -1,5 +1,5 @@
 import { Dialog, Transition } from '@headlessui/react'
-import React, { FC, Fragment } from 'react'
+import React, { FC, Fragment, type JSX } from 'react';
 
 type ParamModalIndex = {
     isOpen: boolean

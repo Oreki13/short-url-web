@@ -69,7 +69,7 @@ const generatePages = (totalPages: number, currentPage: number, rangePage: numbe
     const classSelected: string = "relative z-10 inline-flex items-center bg-sky-950 px-4 py-2 text-sm font-semibold text-white focus:z-20 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600";
     return pages.map((page, index) => {
         if (index > rangePage) {
-            return (<span
+            return (<span key={index}
                     className="relative inline-flex items-center px-4 py-2 text-sm font-semibold text-gray-700 ring-1 ring-inset ring-gray-300 focus:outline-offset-0">...</span>
             )
         }

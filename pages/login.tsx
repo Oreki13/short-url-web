@@ -1,10 +1,10 @@
 import {Inter} from 'next/font/google'
-import HeadHtml from '@/components/headHtml'
+import HeadHtml from '@/components/HeadHtml'
 import {TextInput} from '@/components/TextInput'
-import {useCheckUserLogin} from "@/hooks/useCheckUserLogin";
-import {useFetchLogin} from "@/hooks/useFetchLogin";
 import {DialogComponent} from "@/components/DialogComponent";
 import {NextPage} from "next";
+import {useCheckUserLogin} from "@/lib/hooks/useCheckUserLogin";
+import {useFetchLogin} from "@/lib/hooks/useFetchLogin";
 
 const inter = Inter({subsets: ['latin']})
 
@@ -31,7 +31,7 @@ const Login: NextPage = () => {
                     <span className='font-bold text-2xl text-sky-800'>Login</span>
                     <TextInput register={register} label='E-Mail' textOnError={errors["E-Mail"]?.message}/>
                     <div className='h-5'></div>
-                    <TextInput register={register} label='Password' type='password' name='password'
+                    <TextInput register={register} label='Password' type='password' name='Password'
                                textOnError={errors.Password?.message}/>
                     <button
                         className='mt-5 bg-sky-800 w-full py-2 text-white hover:bg-sky-900 mb-5 outline-sky-700 rounded-lg'

@@ -9,6 +9,7 @@ interface TextInputParam {
     name?: string | undefined
     textOnError?: string | undefined
     register: UseFormRegister<any>
+    value?: string | undefined
 }
 
 export const TextInput: FC<TextInputParam> = ({
@@ -17,12 +18,14 @@ export const TextInput: FC<TextInputParam> = ({
                                                   name,
                                                   textOnError,
                                                   register,
+                                                  value,
                                               }) => {
     return (
         <Field className='flex flex-col items-start w-full'>
             <Label className="text-sm/6 font-semibold ">{label}</Label>
             <Input
                 {...register(name !== undefined ? name : label)}
+                value={value}
                 type={type}
                 className={clsx(
                     label.length > 0 ? "mt-3" : "mt-0", 'block w-full rounded-lg border-blue-200 bg-black/10 py-1.5 px-3 text-sm/6 text-black',

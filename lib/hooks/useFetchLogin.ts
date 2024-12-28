@@ -42,7 +42,7 @@ export const useFetchLogin = () => {
         const resData: LoginResponse = await trigger({email: data["E-Mail"], password: data.Password})
         if (resData != null) {
             if (resData.status === 'OK') {
-                setCookie('token', resData.data)
+                setCookie('token', resData.data, {secure: true, maxAge: 1300000, sameSite: 'strict', })
                 await router.push('/')
             } else {
                 if (resData.code === "INVALID_CREDENTIAL") {
