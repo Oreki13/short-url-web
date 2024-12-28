@@ -1,26 +1,17 @@
 import {Inter} from 'next/font/google'
-import HeadHtml from '@/components/headHtml'
 import HeaderDashboard from '@/components/HeaderDashboard'
-import {CardDashboardShortLink} from '@/components/card_dashboard_short_link'
-import {useEffect, useState} from 'react'
-import dayjs from 'dayjs'
-import ModalAddLink from '@/components/ModalAddLink'
-import {useCheckToken} from "@/hooks/useCheckToken";
-import {useFetchListShortUrl} from "@/hooks/useFetchListShortUrl";
-import {PaginateSection} from "@/components/PaginateSection";
-import {useCheckUserLogin} from "@/hooks/useCheckUserLogin";
+import {useState} from 'react'
+import HeadHtml from "@/components/HeadHtml";
+import {ContentHome} from "@/components/ContentHome";
+import { ModalFormLink} from "@/components/ModalFormLink";
+import {useCheckUserLogin} from "@/lib/hooks/useCheckUserLogin";
+import {useModalFormLinkStore} from "@/lib/stores/modalFormLinkStore";
 
 const inter = Inter({subsets: ['latin']})
 
-export default function Home() {
-    const [isOpenModalAdd, setIsOpenModalAdd] = useState(false)
-    const [currentPage, setCurrentPage] = useState<number>(1)
 
-    const handleChangePage = (toPage: number) => {
-        console.log(`Change page to: ${toPage}`)
-        setCurrentPage(toPage);
-        console.log(`Current page: ${currentPage}`)
-    }
+export default function Home() {
+    const setOpen= useModalFormLinkStore(state => state.setOpen)
 
     useCheckUserLogin()
     return (
@@ -32,43 +23,17 @@ export default function Home() {
                     <div className='flex justify-between'>
                         <h1 className='text-3xl font-semibold'>Links</h1>
                         <button onClick={() => {
-                            setIsOpenModalAdd(true)
+                            setOpen()
                         }} className='bg-sky-900 text-white py-2 px-5 rounded hover:bg-sky-950'>Add Link
                         </button>
                     </div>
                     <div className='mt-7'>
-
-                        {ContentHome(currentPage, handleChangePage)}
+                        {ContentHome()}
                     </div>
                 </div>
             </main>
-            <ModalAddLink isOpen={isOpenModalAdd} onClose={() => {
-                setIsOpenModalAdd(false)
-            }}/>
-
+            <ModalFormLink />
         </>
     )
 }
 
-const ContentHome = (page: number, handleChangePage: (toPage: number) => void) => {
-    const {data, error, isLoading} = useFetchListShortUrl(page, 5);
-
-    if (isLoading) return <p>Loading</p>
-    if (error) return <p>Error</p>
-    if (data === undefined || data.data === undefined || data!.status == "ERROR") return <p>Data is undefined</p>
-
-    return (
-        <>
-            {
-                data!.data.data.map((val, _) =>
-                    <CardDashboardShortLink key={val.id} title={val.title}
-                                            count={val.count_clicks.toString()}
-                                            date={dayjs(val.createdAt).format('D MMMM YYYY')}
-                                            direction={val.destination}/>
-                )
-            }
-            <PaginateSection paging={data!.data.paging} page={page} handleChangePage={handleChangePage}/>
-        </>
-
-    )
-}

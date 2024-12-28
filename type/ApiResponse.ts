@@ -31,7 +31,7 @@ type ShortUrlData = {
     id: string
     title: string
     destination: string
-    back_half: string
+    path: string
     count_clicks: number
     is_deleted: number
     user_id: string
