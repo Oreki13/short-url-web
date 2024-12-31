@@ -7,20 +7,14 @@ type ParamPaginateSection = {
     paging: PagingData,
 }
 
-export const PaginateSection:FC<ParamPaginateSection> = ({page, handleChangePage, paging}) => {
+export const PaginateSection: FC<ParamPaginateSection> = ({page, handleChangePage, paging}) => {
 
     return (
         <>
             <div
-                className="flex items-center justify-between border-t border-gray-200 bg-white px-4 py-3 sm:px-6">
-                <div className="flex flex-1 justify-between sm:hidden">
-                    <a href="#"
-                       className="relative inline-flex items-center rounded-md border border-gray-300 bg-white px-4 py-2 text-sm font-medium text-gray-700 hover:bg-gray-50">Previous</a>
-                    <a href="#"
-                       className="relative ml-3 inline-flex items-center rounded-md border border-gray-300 bg-white px-4 py-2 text-sm font-medium text-gray-700 hover:bg-gray-50">Next</a>
-                </div>
-                <div className="hidden sm:flex sm:flex-1 sm:items-center sm:justify-between">
-                    <div>
+                className="flex  items-center justify-between border-t border-gray-200 bg-white  py-3 overflow-scroll">
+                <div className=" sm:flex sm:flex-1 sm:items-center sm:justify-between w-full">
+                    <div className="hidden sm:block">
                         <p className="text-sm text-gray-700">
                             Showing
                             <span className="font-medium"> {paging.current_page} </span>
@@ -31,11 +25,11 @@ export const PaginateSection:FC<ParamPaginateSection> = ({page, handleChangePage
                             results
                         </p>
                     </div>
-                    <div>
+                    <div className="w-full text-center sm:w-auto ">
                         <nav className="isolate inline-flex -space-x-px rounded-md shadow-sm"
                              aria-label="Pagination">
                             <button onClick={() => (page - 1) >= 1 ? handleChangePage(page - 1) : null}
-                               className="relative inline-flex items-center rounded-l-md px-2 py-2 text-gray-400 ring-1 ring-inset ring-gray-300 hover:bg-gray-50 focus:z-20 focus:outline-offset-0">
+                                    className="relative inline-flex items-center rounded-l-md px-2 py-2 text-gray-400 ring-1 ring-inset ring-gray-300 hover:bg-gray-50 focus:z-20 focus:outline-offset-0">
                                 <span className="sr-only">Previous</span>
                                 <svg className="h-5 w-5" viewBox="0 0 20 20" fill="currentColor"
                                      aria-hidden="true">
@@ -44,9 +38,9 @@ export const PaginateSection:FC<ParamPaginateSection> = ({page, handleChangePage
                                           clipRule="evenodd"/>
                                 </svg>
                             </button>
-                            {generatePages(paging.total_page, paging.current_page, 5, handleChangePage)}
+                            {generatePages(paging.total_page, paging.current_page, 3, handleChangePage)}
                             <button onClick={() => (page + 1) <= paging.total_page ? handleChangePage(page + 1) : null}
-                               className="relative inline-flex items-center rounded-r-md px-2 py-2 text-gray-400 ring-1 ring-inset ring-gray-300 hover:bg-gray-50 focus:z-20 focus:outline-offset-0">
+                                    className="relative inline-flex items-center rounded-r-md px-2 py-2 text-gray-400 ring-1 ring-inset ring-gray-300 hover:bg-gray-50 focus:z-20 focus:outline-offset-0">
                                 <span className="sr-only">Next</span>
                                 <svg className="h-5 w-5" viewBox="0 0 20 20" fill="currentColor"
                                      aria-hidden="true">
@@ -63,21 +57,42 @@ export const PaginateSection:FC<ParamPaginateSection> = ({page, handleChangePage
     )
 }
 
-const generatePages = (totalPages: number, currentPage: number, rangePage: number, handleChangePage: (page: number) => void ) => {
-    const pages = generateListPages(totalPages, rangePage);
+const generatePages = (totalPages: number, currentPage: number, rangePage: number, handleChangePage: (page: number) => void) => {
+    const pages = [];
     const classUnselected: string = "relative inline-flex items-center px-4 py-2 text-sm font-semibold text-gray-900 ring-1 ring-inset ring-gray-300 hover:bg-gray-50 focus:z-20 focus:outline-offset-0";
     const classSelected: string = "relative z-10 inline-flex items-center bg-sky-950 px-4 py-2 text-sm font-semibold text-white focus:z-20 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600";
+
+
+    const startPages = Array.from({length: rangePage}, (_, i) => i + 1);
+    const endPages = Array.from({length: rangePage}, (_, i) => totalPages - rangePage + 1 + i);
+    const middlePages = Array.from({length: rangePage * 2 + 1}, (_, i) => currentPage - rangePage + i).filter(page => page > rangePage && page <= totalPages - rangePage);
+
+    pages.push(...startPages);
+
+    if (middlePages[0] > rangePage + 1) {
+        pages.push('...');
+    }
+
+    pages.push(...middlePages);
+
+    if (middlePages[middlePages.length - 1] < totalPages - rangePage) {
+        pages.push('...');
+    }
+
+    pages.push(...endPages);
+
     return pages.map((page, index) => {
-        if (index > rangePage) {
-            return (<span key={index}
-                    className="relative inline-flex items-center px-4 py-2 text-sm font-semibold text-gray-700 ring-1 ring-inset ring-gray-300 focus:outline-offset-0">...</span>
-            )
+        if (page === '...') {
+            return (
+                <span key={index}
+                      className="relative inline-flex items-center px-4 py-2 text-sm font-semibold text-gray-700 ring-1 ring-inset ring-gray-300 focus:outline-offset-0">...</span>
+            );
         }
         return (
-            <button onClick={()=>handleChangePage(page)} aria-current="page" key={page}
-               className={currentPage === page ? classSelected : classUnselected}>{page}</button>
-        )
-    })
+            <button onClick={() => handleChangePage(Number(page))} aria-current="page" key={page}
+                    className={currentPage === page ? classSelected : classUnselected}>{page}</button>
+        );
+    });
 }
 
 const generateListPages = (totalPages: number, rangePage: number,) => {

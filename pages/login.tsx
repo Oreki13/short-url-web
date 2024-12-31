@@ -8,7 +8,7 @@ import {useFetchLogin} from "@/lib/hooks/useFetchLogin";
 
 const inter = Inter({subsets: ['latin']})
 
-const Login: NextPage = () => {
+const Loginx: NextPage = () => {
 
     useCheckUserLogin();
     const {
@@ -44,5 +44,5 @@ const Login: NextPage = () => {
     )
 }
 
-export default Login;
+export default Loginx;
 

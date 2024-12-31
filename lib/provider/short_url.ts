@@ -1,4 +1,4 @@
-import {GetListShortUrlResponse} from "@/type/ApiResponse"
+import {ApiResponse, GetListShortUrlResponse} from "@/type/ApiResponse"
 import {DefaultHeader, Fetcher} from './index'
 import {AddShortUrlResponse} from "@/type/AddShortUrl";
 
@@ -17,7 +17,6 @@ const ShortUrlProvider = {
             .catch(e => console.log(e));
     },
     addData: async (url: string, { arg }: { arg: { title: string, path: string, destination: string } }): Promise<AddShortUrlResponse> => {
-
         return Fetcher(url, {
             method: "POST",
             headers: {
@@ -26,6 +25,31 @@ const ShortUrlProvider = {
                 "Accept": "application/json",
             },
             body: JSON.stringify(arg)
+        })
+            .then((v) => v)
+            .catch(e => console.log(e));
+    },
+    editData: async (url: string, { arg }: { arg: { title: string, path: string, destination: string } }): Promise<AddShortUrlResponse> => {
+        return Fetcher(url, {
+            method: "PUT",
+            headers: {
+                ...DefaultHeader(),
+                "Content-Type": "application/json",
+                "Accept": "application/json",
+            },
+            body: JSON.stringify(arg)
+        })
+            .then((v) => v)
+            .catch(e => console.log(e));
+    },
+    deleteData: async (url: string): Promise<ApiResponse> => {
+        return Fetcher(url, {
+            method: "DELETE",
+            headers: {
+                ...DefaultHeader(),
+                "Content-Type": "application/json",
+                "Accept": "application/json",
+            },
         })
             .then((v) => v)
             .catch(e => console.log(e));
