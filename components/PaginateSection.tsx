@@ -62,24 +62,29 @@ const generatePages = (totalPages: number, currentPage: number, rangePage: numbe
     const classUnselected: string = "relative inline-flex items-center px-4 py-2 text-sm font-semibold text-gray-900 ring-1 ring-inset ring-gray-300 hover:bg-gray-50 focus:z-20 focus:outline-offset-0";
     const classSelected: string = "relative z-10 inline-flex items-center bg-sky-950 px-4 py-2 text-sm font-semibold text-white focus:z-20 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600";
 
+    if (totalPages <= rangePage * 2 + 1) {
+        for (let i = 1; i <= totalPages; i++) {
+            pages.push(i);
+        }
+    } else {
+        const startPages = Array.from({ length: rangePage }, (_, i) => i + 1);
+        const endPages = Array.from({ length: rangePage }, (_, i) => totalPages - rangePage + 1 + i);
+        const middlePages = Array.from({ length: rangePage * 2 + 1 }, (_, i) => currentPage - rangePage + i).filter(page => page > rangePage && page <= totalPages - rangePage);
 
-    const startPages = Array.from({length: rangePage}, (_, i) => i + 1);
-    const endPages = Array.from({length: rangePage}, (_, i) => totalPages - rangePage + 1 + i);
-    const middlePages = Array.from({length: rangePage * 2 + 1}, (_, i) => currentPage - rangePage + i).filter(page => page > rangePage && page <= totalPages - rangePage);
+        pages.push(...startPages);
 
-    pages.push(...startPages);
+        if (middlePages[0] > rangePage + 1) {
+            pages.push('...');
+        }
 
-    if (middlePages[0] > rangePage + 1) {
-        pages.push('...');
+        pages.push(...middlePages);
+
+        if (middlePages[middlePages.length - 1] < totalPages - rangePage) {
+            pages.push('...');
+        }
+
+        pages.push(...endPages);
     }
-
-    pages.push(...middlePages);
-
-    if (middlePages[middlePages.length - 1] < totalPages - rangePage) {
-        pages.push('...');
-    }
-
-    pages.push(...endPages);
 
     return pages.map((page, index) => {
         if (page === '...') {
