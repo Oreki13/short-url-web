@@ -49,8 +49,13 @@ export const ContentHome = () => {
                         data!.data.data.map((val, index) =>
                             <tr className="rounded-b-lg" key={index}>
                                 <td className="border border-sky-900 px-2 py-1 rounded-bl-lg">{val.title}</td>
-                                <td onClick={() => redirect(val.path)}
-                                    className="border border-sky-900 px-2 py-1 cursor-pointer hover:text-sky-600 ">{val.destination}</td>
+                                <td
+                                    className="border border-sky-900 px-2 py-1 cursor-pointer hover:text-sky-600 ">
+                                    <a target="_blank" href={"https://s.ar-fandy.dev/" + val.path}>
+
+                                    {val.destination}
+                                    </a>
+                                </td>
                                 <td className="border border-sky-900 px-2 py-1 rounded-br-lg">{val.count_clicks}</td>
                                 <td className="border border-sky-900 px-2 py-1 rounded-br-lg">{dayjs(val.createdAt).format('D MMMM YYYY')}</td>
                                 <td className="border border-sky-900 px-2 py-1 text-center ">
