@@ -15,7 +15,7 @@ const defaultResponse: ApiResponse = {
 type Modify<T, R> = Omit<T, keyof R> & R;
 
 type LoginResponse = Modify<ApiResponse, {
-    data:string  | null
+    data: string | null
 }>
 
 type GetListShortUrlResponse = Modify<ApiResponse, {
@@ -46,6 +46,11 @@ type PagingData = {
     total_data: number
 }
 
+type CsrfTokenResponse = Modify<ApiResponse, {
+    data: {
+        csrfToken: string
+    }
+}>
 
 export { defaultResponse };
-export type { ApiResponse, LoginResponse, GetListShortUrlResponse, PagingData };
+export type { ApiResponse, LoginResponse, GetListShortUrlResponse, PagingData, CsrfTokenResponse };

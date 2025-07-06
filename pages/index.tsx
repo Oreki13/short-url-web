@@ -1,15 +1,15 @@
-import {Inter} from 'next/font/google'
+import { Inter } from 'next/font/google'
 import HeaderDashboard from '@/components/HeaderDashboard'
-import {useState} from 'react'
+import { useState } from 'react'
 import HeadHtml from "@/components/HeadHtml";
-import {ContentHome} from "@/components/ContentHome";
-import {ModalFormLink} from "@/components/ModalFormLink";
-import {useCheckUserLogin} from "@/lib/hooks/useCheckUserLogin";
-import {useModalFormLinkStore} from "@/lib/stores/dashboard/modalFormLinkStore";
-import {useModalDeleteConfirmStore} from "@/lib/stores/dashboard/modalDeleteConfirm";
-import {ModalDeleteConfirmation} from "@/components/ModalDeleteConfirmation";
+import { ContentHome } from "@/components/ContentHome";
+import { ModalFormLink } from "@/components/ModalFormLink";
+import { useCheckUserLogin } from "@/lib/hooks/useCheckUserLogin";
+import { useModalFormLinkStore } from "@/lib/stores/dashboard/modalFormLinkStore";
+import { useModalDeleteConfirmStore } from "@/lib/stores/dashboard/modalDeleteConfirm";
+import { ModalDeleteConfirmation } from "@/components/ModalDeleteConfirmation";
 
-const inter = Inter({subsets: ['latin']})
+const inter = Inter({ subsets: ['latin'] })
 
 
 export default function Home() {
@@ -18,9 +18,9 @@ export default function Home() {
     useCheckUserLogin()
     return (
         <>
-            <HeadHtml title='Dashboard'/>
+            <HeadHtml title='Dashboard' />
             <main className={inter.className}>
-                <HeaderDashboard title='ShortURL'/>
+                <HeaderDashboard title='ShortURL' />
                 <div className='max-w-screen-lg lg:mx-auto mt-12 mx-5'>
                     <div className='flex justify-between'>
                         <h1 className='text-3xl font-semibold'>Links</h1>
@@ -32,8 +32,8 @@ export default function Home() {
                     {ContentHome()}
                 </div>
             </main>
-            <ModalFormLink/>
-            <ModalDeleteConfirmation/>
+            <ModalFormLink />
+            <ModalDeleteConfirmation />
         </>
     )
 }

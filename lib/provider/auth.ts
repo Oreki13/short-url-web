@@ -1,26 +1,28 @@
-import { DefaultHeader } from ".";
+import { DefaultHeader, Fetcher } from ".";
 
 const Auth = {
 
     login: async (url: string, { arg }: { arg: { email: string, password: string } }) => {
-        return fetch(url, {
+        return Fetcher(url, {
             method: 'POST',
             body: JSON.stringify(arg),
-            cache:"no-cache",
+            cache: "no-cache",
             headers: {
                 "Content-Type": "application/json",
                 "Accept": "application/json",
             }
-        }).then(res => res.json()).catch((e) => {
+        }).then(res => res).catch((e) => {
             console.log(e);
         })
     },
     verify: async (url: string) => {
-        return fetch(url, {
+        return Fetcher(url, {
             method: "GET",
-            headers: DefaultHeader()
-        }).then(res => res.json()).catch((e) => console.log(e)
-        )
+            headers: DefaultHeader(),
+            credentials: 'include',
+        }).then(res => res).catch((e) => {
+            console.log(e);
+        });
     }
 }
 

@@ -1,17 +1,21 @@
-import {useRouter} from "next/router";
-import {z} from "zod";
+import { useRouter } from "next/router";
+import { z } from "zod";
 import useSWRMutation from "swr/mutation";
-import {SubmitHandler, useForm} from "react-hook-form";
-import {zodResolver} from "@hookform/resolvers/zod";
-import {setCookie} from "cookies-next";
-import {useState} from "react";
+import { SubmitHandler, useForm } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { useState } from "react";
 import Auth from "@/lib/provider/auth";
 import ApiEndpoint from "@/lib/helpers/api_endpoint";
-import {ApiResponse} from "@/type/ApiResponse";
+import { ApiResponse } from "@/type/ApiResponse";
+import { TokenManager } from "../utils/tokenManager";
 
 type Modify<T, R> = Omit<T, keyof R> & R;
 type LoginResponse = Modify<ApiResponse, {
-    data: { token: string } | null
+    data: {
+        access_token: string,
+        refresh_token: string,
+        expires_in: number,
+    } | null
 }>
 
 const schema = z.object({
@@ -25,7 +29,7 @@ export const useFetchLogin = () => {
     const router = useRouter()
     const [isOpenDialog, setIsOpenDialog] = useState(false);
     const [errorMessage, setErrorMessage] = useState<string>("");
-    const {trigger} = useSWRMutation(ApiEndpoint.login, Auth.login)
+    const { trigger } = useSWRMutation(ApiEndpoint.login, Auth.login)
     const {
         register,
         handleSubmit,
@@ -39,10 +43,10 @@ export const useFetchLogin = () => {
     });
 
     const onSubmit: SubmitHandler<FormFields> = async (data) => {
-        const resData: LoginResponse = await trigger({email: data["E-Mail"], password: data.Password})
+        const resData: LoginResponse = await trigger({ email: data["E-Mail"], password: data.Password })
         if (resData != null) {
             if (resData.status === 'OK') {
-                setCookie('token', resData.data, {secure: true, maxAge: 1300000, sameSite: 'strict', })
+                TokenManager.setTokens({ access_token: resData.data?.access_token || '', refresh_token: resData.data?.refresh_token || '', expires_in: resData.data?.expires_in || 0 });
                 await router.push('/')
             } else {
                 if (resData.code === "INVALID_CREDENTIAL") {
