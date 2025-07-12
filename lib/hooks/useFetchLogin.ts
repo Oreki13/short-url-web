@@ -27,7 +27,6 @@ const schema = z.object({
 type FormFields = z.infer<typeof schema>;
 
 export const useFetchLogin = () => {
-    const router = useRouter()
     const { login: authLogin } = useAuth()
     const [isOpenDialog, setIsOpenDialog] = useState(false);
     const [errorMessage, setErrorMessage] = useState<string>("");
