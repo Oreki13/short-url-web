@@ -45,8 +45,8 @@ export const ContentHome = () => {
         <div className="space-y-4">
             {/* Compact List Layout */}
             <div className="space-y-3">
-                {data!.data.data.map((val, index) => (
-                    <div key={index} className="group bg-gray-800/40 border border-gray-700/50 rounded-xl p-4 hover:bg-gray-800/60 hover:border-gray-600 transition-all duration-200">
+                {data!.data.data.map((val) => (
+                    <div key={val.id} className="group bg-gray-800/40 border border-gray-700/50 rounded-xl p-4 hover:bg-gray-800/60 hover:border-gray-600 transition-all duration-200">
                         {/* Header Row - Title, Date, Actions */}
                         <div className="flex items-start justify-between gap-4 mb-3">
                             <div className="flex-1 min-w-0">
