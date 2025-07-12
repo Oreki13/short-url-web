@@ -1,14 +1,15 @@
 'use client'
 
-import React, {useCallback, useEffect, useMemo} from 'react'
-import {TextInput} from './TextInput'
+import React, { useCallback, useEffect, useMemo } from 'react'
+import { TextInput } from './TextInput'
 import ModalIndex from './IndexModal'
-import {TypeFormAddLink, useManageLink} from "@/lib/hooks/useManageLink";
-import {useModalFormLinkStore} from "@/lib/stores/dashboard/modalFormLinkStore";
+import { TypeFormAddLink, useManageLink } from "@/lib/hooks/useManageLink";
+import { useModalFormLinkStore } from "@/lib/stores/dashboard/modalFormLinkStore";
+import { useFetchCsrfToken } from '@/lib/hooks/useFetchCsrfToken';
 
 
 export const ModalFormLink = () => {
-    const {isOpen, setClose, dataLink, setDataLink} = useModalFormLinkStore(state => state)
+    const { isOpen, setClose, dataLink, setDataLink } = useModalFormLinkStore(state => state)
     const {
         register,
         errors,
@@ -31,6 +32,8 @@ export const ModalFormLink = () => {
             }, 300)
         }
     }, [dataLink, isOpen, setDataLink]);
+
+    useFetchCsrfToken(isOpen);
 
     useEffect(() => {
         handleSetDataLink();

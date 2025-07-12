@@ -1,9 +1,9 @@
 'use client'
 
 import { Menu, Transition } from '@headlessui/react'
-import { deleteCookie } from 'cookies-next'
 import React, { FC } from 'react'
-import {useRouter} from "next/navigation";
+import { useRouter } from "next/navigation";
+import { CookieManage } from '@/lib/provider';
 
 interface HeaderParam {
     title: string
@@ -12,7 +12,7 @@ interface HeaderParam {
 const HeaderDashboard: FC<HeaderParam> = ({ title }) => {
     const router = useRouter()
     const logout = () => {
-        deleteCookie('token')
+        CookieManage.deleteCookies(['accessToken', 'refreshToken', 'csrf_token']);
         router.push('/login')
     }
     return (
