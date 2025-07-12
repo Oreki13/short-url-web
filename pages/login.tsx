@@ -98,7 +98,7 @@ const Login: NextPage = () => {
                         {/* Submit Button */}
                         <button
                             type='submit'
-                            disabled={isSubmitting || isLoading}
+                            disabled={isSubmitting || isLoginLoading}
                             className="w-full bg-gradient-to-r from-sky-600 to-sky-700 hover:from-sky-700 hover:to-sky-800 
                                      text-white font-semibold py-3 px-6 rounded-xl transition-all duration-200 
                                      transform hover:scale-[1.02] active:scale-[0.98] disabled:opacity-50 
