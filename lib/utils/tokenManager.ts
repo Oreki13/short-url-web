@@ -11,16 +11,76 @@ interface TokenRefreshResponse {
     } | null;
 }
 
+interface TokenValidationResult {
+    isValid: boolean;
+    isExpired?: boolean;
+    expiresAt?: number;
+    timeUntilExpiry?: number;
+    error?: string;
+}
+
 export class TokenManager {
     private static readonly ACCESS_TOKEN_KEY = 'accessToken';
     private static readonly REFRESH_TOKEN_KEY = 'refreshToken';
     private static readonly API_REFRESH_ENDPOINT = '/api/v1/auth/refresh-token';
 
     /**
-     * Get current access token
+     * Validate JWT token structure and expiry
+     */
+    static validateToken(token: string): TokenValidationResult {
+        try {
+            if (!token || typeof token !== 'string') {
+                return { isValid: false, error: 'Invalid token format' };
+            }
+
+            const parts = token.split('.');
+            if (parts.length !== 3) {
+                return { isValid: false, error: 'Invalid JWT structure' };
+            }
+
+            // Decode payload
+            const payload = JSON.parse(atob(parts[1]));
+
+            if (!payload.exp) {
+                return { isValid: false, error: 'Token missing expiration' };
+            }
+
+            const expiresAt = payload.exp * 1000; // Convert to milliseconds
+            const currentTime = Date.now();
+            const timeUntilExpiry = expiresAt - currentTime;
+            const isExpired = timeUntilExpiry <= 0;
+
+            return {
+                isValid: !isExpired,
+                isExpired,
+                expiresAt,
+                timeUntilExpiry: Math.max(0, timeUntilExpiry),
+                error: isExpired ? 'Token expired' : undefined
+            };
+        } catch (error) {
+            return {
+                isValid: false,
+                error: `Token validation failed: ${error instanceof Error ? error.message : 'Unknown error'}`
+            };
+        }
+    }
+
+    /**
+     * Get current access token with validation
      */
     static getAccessToken(): string | undefined {
-        return getCookie(TokenManager.ACCESS_TOKEN_KEY) as string | undefined;
+        const token = getCookie(TokenManager.ACCESS_TOKEN_KEY) as string | undefined;
+
+        if (!token) return undefined;
+
+        const validation = this.validateToken(token);
+        if (!validation.isValid) {
+            console.warn('Invalid access token detected:', validation.error);
+            this.clearTokens();
+            return undefined;
+        }
+
+        return token;
     }
 
     /**
@@ -28,6 +88,33 @@ export class TokenManager {
      */
     static getRefreshToken(): string | undefined {
         return getCookie(TokenManager.REFRESH_TOKEN_KEY) as string | undefined;
+    }
+
+    /**
+     * Check if access token exists and is valid
+     */
+    static isAuthenticated(): boolean {
+        const token = this.getAccessToken();
+        return !!token;
+    }
+
+    /**
+     * Get token expiry information
+     */
+    static getTokenExpiry(): { expiresAt: number; timeUntilExpiry: number } | null {
+        const token = getCookie(TokenManager.ACCESS_TOKEN_KEY) as string | undefined;
+
+        if (!token) return null;
+
+        const validation = this.validateToken(token);
+        if (!validation.isValid || !validation.expiresAt || !validation.timeUntilExpiry) {
+            return null;
+        }
+
+        return {
+            expiresAt: validation.expiresAt,
+            timeUntilExpiry: validation.timeUntilExpiry
+        };
     }
 
     /**

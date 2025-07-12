@@ -8,6 +8,7 @@ import Auth from "@/lib/provider/auth";
 import ApiEndpoint from "@/lib/helpers/api_endpoint";
 import { ApiResponse } from "@/type/ApiResponse";
 import { TokenManager } from "../utils/tokenManager";
+import { useAuth } from "../context/AuthContext";
 
 type Modify<T, R> = Omit<T, keyof R> & R;
 type LoginResponse = Modify<ApiResponse, {
@@ -27,6 +28,7 @@ type FormFields = z.infer<typeof schema>;
 
 export const useFetchLogin = () => {
     const router = useRouter()
+    const { login: authLogin } = useAuth()
     const [isOpenDialog, setIsOpenDialog] = useState(false);
     const [errorMessage, setErrorMessage] = useState<string>("");
     const { trigger } = useSWRMutation(ApiEndpoint.login, Auth.login)
@@ -43,20 +45,38 @@ export const useFetchLogin = () => {
     });
 
     const onSubmit: SubmitHandler<FormFields> = async (data) => {
-        const resData: LoginResponse = await trigger({ email: data["E-Mail"], password: data.Password })
-        if (resData != null) {
-            if (resData.status === 'OK') {
-                TokenManager.setTokens({ access_token: resData.data?.access_token || '', refresh_token: resData.data?.refresh_token || '', expires_in: resData.data?.expires_in || 0 });
-                await router.push('/')
-            } else {
-                if (resData.code === "INVALID_CREDENTIAL") {
-                    setIsOpenDialog(true);
-                    setErrorMessage("Invalid email or password")
+        try {
+            const resData: LoginResponse = await trigger({
+                email: data["E-Mail"],
+                password: data.Password
+            })
+
+            if (resData != null) {
+                if (resData.status === 'OK' && resData.data) {
+                    // Set tokens first
+                    TokenManager.setTokens({
+                        access_token: resData.data.access_token,
+                        refresh_token: resData.data.refresh_token,
+                        expires_in: resData.data.expires_in
+                    });
+
+                    // Use AuthContext login for proper navigation
+                    await authLogin(resData.data.access_token, undefined, '/');
+
                 } else {
-                    setIsOpenDialog(true);
-                    setErrorMessage("Something went wrong")
+                    if (resData.code === "INVALID_CREDENTIAL") {
+                        setIsOpenDialog(true);
+                        setErrorMessage("Invalid email or password")
+                    } else {
+                        setIsOpenDialog(true);
+                        setErrorMessage("Something went wrong")
+                    }
                 }
             }
+        } catch (error) {
+            console.error('Login error:', error);
+            setIsOpenDialog(true);
+            setErrorMessage("Login failed. Please try again.");
         }
     }
 

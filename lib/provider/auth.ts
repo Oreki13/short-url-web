@@ -6,11 +6,8 @@ const Auth = {
         return Fetcher(url, {
             method: 'POST',
             body: JSON.stringify(arg),
+            headers: DefaultHeader(),
             cache: "no-cache",
-            headers: {
-                "Content-Type": "application/json",
-                "Accept": "application/json",
-            }
         }).then(res => res).catch((e) => {
             console.log(e);
         })
@@ -18,6 +15,15 @@ const Auth = {
     verify: async (url: string) => {
         return Fetcher(url, {
             method: "GET",
+            headers: DefaultHeader(),
+            credentials: 'include',
+        }).then(res => res).catch((e) => {
+            console.log(e);
+        });
+    },
+    logout: async (url: string) => {
+        return Fetcher(url, {
+            method: "POST",
             headers: DefaultHeader(),
             credentials: 'include',
         }).then(res => res).catch((e) => {
