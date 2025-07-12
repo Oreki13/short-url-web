@@ -27,7 +27,7 @@ const DefaultHeader = () => {
     const csrfToken = CookieManage.getCookie("csrf_token");
     // console.log("session", session);
 
-    const jwtData: any = jwt.decode(token!)
+    const jwtData: any = token ? jwt.decode(token) : null;
 
     // Set cookie for headers
     // let cookieHeader = "x-csrf-token=" + csrfToken + "; ";

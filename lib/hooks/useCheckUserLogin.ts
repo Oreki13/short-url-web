@@ -2,7 +2,6 @@
 import { useRouter } from "next/navigation";
 import ApiEndpoint from "@/lib/helpers/api_endpoint";
 import Auth from "@/lib/provider/auth";
-// import { deleteCookie, hasCookie } from "cookies-next";
 import useSWRMutation from "swr/mutation";
 import { useCallback, useEffect } from "react";
 import { ApiResponse } from "@/type/ApiResponse";
@@ -22,15 +21,12 @@ export const useCheckUserLogin = () => {
         if (checkToken) {
             const resData: ApiResponse = await checkVerify.trigger()
             if (resData === undefined) return router.push('/login')
-            if (resData.status === "OK") {
-                router.push('/')
-            } else {
+            if (resData.status !== "OK") {
                 TokenManager.clearTokens()
-                // deleteCookie('token')
-                router.push('/login-ssr')
+                return router.push('/login')
             }
         }
-    }, [])
+    }, [router, checkVerify])
 
     useEffect(() => {
         checkIsUserLogin().then(_ => {
