@@ -37,7 +37,7 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({
     const [user, setUser] = useState<User | null>(null);
     const [isNavigating, setIsNavigating] = useState(false);
     const [isLoggingOut, setIsLoggingOut] = useState(false);
-    const { isLoading, isAuthenticated, error, recheck } = useCheckUserLogin(skipRedirectOnNoToken || isLoggingOut);
+    const { isLoading, isAuthenticated, user: authUser, error, recheck } = useCheckUserLogin(skipRedirectOnNoToken || isLoggingOut);
     // Disable token refresh to prevent circular dependency and loading issues
     // const { forceRefresh } = useTokenRefresh({ enabled: isAuthenticated === true });
 
@@ -45,12 +45,26 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({
         try {
             setIsNavigating(true);
 
-            // Set user data immediately
+            // Store the token first - extract expiry from JWT if possible
+            let expiresIn = 3600; // default 1 hour
+            try {
+                const payload = JSON.parse(atob(token.split('.')[1]));
+                if (payload.exp) {
+                    expiresIn = payload.exp - Math.floor(Date.now() / 1000);
+                }
+            } catch (e) {
+                console.warn('Could not parse token expiry, using default');
+            }
+
+            TokenManager.setAccessToken(token, expiresIn);
+
+            // Set user data immediately if provided
             if (userData) {
                 setUser(userData);
             }
 
-            // Verify the new token
+            // Verify the new token and fetch user data if needed
+            // This will trigger useCheckUserLogin to revalidate and potentially fetch user data
             await recheck();
 
             // Navigate to dashboard or specified route
@@ -98,6 +112,13 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({
             setUser(null);
         }
     }, [isAuthenticated, user, isNavigating, isLoggingOut]);
+
+    // Update user data when authentication succeeds and we have user data from API
+    useEffect(() => {
+        if (isAuthenticated && authUser && !user && !isLoggingOut) {
+            setUser(authUser);
+        }
+    }, [isAuthenticated, authUser, user, isLoggingOut]);
 
     const contextValue: AuthContextType = {
         user,

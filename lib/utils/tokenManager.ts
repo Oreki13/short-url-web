@@ -141,6 +141,17 @@ export class TokenManager {
     }
 
     /**
+     * Set access token only (useful when refresh token is not available)
+     */
+    static setAccessToken(token: string, expiresIn: number = 3600): void {
+        setCookie(TokenManager.ACCESS_TOKEN_KEY, token, {
+            secure: true,
+            maxAge: expiresIn,
+            sameSite: 'strict',
+        });
+    }
+
+    /**
      * Clear all tokens
      */
     static clearTokens(): void {

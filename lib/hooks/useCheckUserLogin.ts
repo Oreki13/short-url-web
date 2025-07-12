@@ -9,6 +9,7 @@ import { TokenManager } from "../utils/tokenManager";
 interface AuthState {
     isLoading: boolean;
     isAuthenticated: boolean;
+    user: any | null;
     error: string | null;
 }
 
@@ -79,9 +80,13 @@ export const useCheckUserLogin = (skipRedirectOnNoToken: boolean = false) => {
         data.status === "OK"
     );
 
+    // Extract user data from API response if available
+    const userData = isAuthenticated && data?.data ? data.data : null;
+
     return {
         isLoading: shouldFetch && isLoading && !skipRedirectOnNoToken,
         isAuthenticated,
+        user: userData,
         error: error?.message || null,
         recheck
     };
