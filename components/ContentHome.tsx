@@ -112,7 +112,7 @@ export const ContentHome = () => {
                                         </a>
                                     </div>
                                     <button
-                                        onClick={() => copyToClipboard("https://s.ar-fandy.dev/" + val.path)}
+                                        onClick={() => copyToClipboard(process.env.NEXT_PUBLIC_GO_HOST + "/" + val.path)}
                                         className="p-1.5 hover:bg-gray-700/50 rounded-md transition-colors group/copy shrink-0"
                                         title="Copy Short URL"
                                     >
