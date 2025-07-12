@@ -1,15 +1,15 @@
-import {z} from "zod";
-import {useState} from "react";
+import { z } from "zod";
+import { useState } from "react";
 import useSWRMutation from "swr/mutation";
 import ApiEndpoint from "@/lib/helpers/api_endpoint";
-import {SubmitHandler, useForm} from "react-hook-form";
-import {zodResolver} from "@hookform/resolvers/zod";
+import { SubmitHandler, useForm } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
 import ShortUrlProvider from "@/lib/provider/short_url";
-import {AddShortUrlResponse} from "@/type/AddShortUrl";
-import {useFetchListShortUrl} from "@/lib/hooks/useFetchListShortUrl";
-import {useModalFormLinkStore} from "@/lib/stores/dashboard/modalFormLinkStore";
-import {ApiResponse} from "@/type/ApiResponse";
-import {useModalDeleteConfirmStore} from "@/lib/stores/dashboard/modalDeleteConfirm";
+import { AddShortUrlResponse } from "@/type/AddShortUrl";
+import { useFetchListShortUrl } from "@/lib/hooks/useFetchListShortUrl";
+import { useModalFormLinkStore } from "@/lib/stores/dashboard/modalFormLinkStore";
+import { ApiResponse } from "@/type/ApiResponse";
+import { useModalDeleteConfirmStore } from "@/lib/stores/dashboard/modalDeleteConfirm";
 
 export enum TypeFormAddLink {
     add, edit
@@ -27,13 +27,13 @@ type FormFields = z.infer<typeof schema>;
 export const useManageLink = () => {
     const [errorMessage, setErrorMessage] = useState<string>("");
     const [isLoadingDelete, setIsLoadingDelete] = useState<boolean>(false);
-    let idLink: string = "";
+    const [idLink, setIdLink] = useState<string>("");
     const setClose = useModalFormLinkStore(state => state.setClose)
     const setCloseDeleteModal = useModalDeleteConfirmStore(state => state.setClose)
 
 
-    const {mutate} = useFetchListShortUrl();
-    const {trigger} = useSWRMutation(ApiEndpoint.short, ShortUrlProvider.addData)
+    const { mutate } = useFetchListShortUrl();
+    const { trigger } = useSWRMutation(ApiEndpoint.short, ShortUrlProvider.addData)
     const {
         register,
         handleSubmit,
@@ -77,7 +77,7 @@ export const useManageLink = () => {
                 path: val.Path
             }
         })
-        idLink = ""
+        setIdLink("")
         if (resData != null) {
             if (resData.status === 'OK') {
                 await mutate()
@@ -105,9 +105,9 @@ export const useManageLink = () => {
         }
     }
 
-    const setIdLink = (id: string) => {
-        idLink = id;
-    }
+    // const setIdLink = (id: string) => {
+    //     idLink = id;
+    // }
 
     return {
         register,
