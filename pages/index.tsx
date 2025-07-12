@@ -10,7 +10,7 @@ import { ModalDeleteConfirmation } from "@/components/ModalDeleteConfirmation";
 
 function Home() {
     const setOpen = useModalFormLinkStore(state => state.setOpen)
-    const { user, isLoading } = useAuth()
+    const { user } = useAuth()
 
     return (
         <div className="min-h-screen bg-gradient-to-br from-gray-900 via-gray-800 to-gray-900">
