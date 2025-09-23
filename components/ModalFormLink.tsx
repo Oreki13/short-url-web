@@ -39,7 +39,7 @@ export const ModalFormLink = () => {
         setValue('Path', dataLink?.path ?? "")
         handleSetDataLink();
 
-    }, [isOpen, setValue, handleSetDataLink, dataLink])
+    }, [isOpen, setValue, handleSetDataLink, dataLink, setIdLink]);
 
     return (
         <ModalIndex isOpen={isOpen} onClose={() => {

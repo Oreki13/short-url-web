@@ -8,7 +8,7 @@ export const NoDataFound = () => {
             </div>
             <h3 className="text-xl font-semibold text-white mb-2">No Links Found</h3>
             <p className="text-gray-400 text-center max-w-md">
-                You haven't created any short links yet. Click the "Add New Link" button to get started.
+                {`You haven't created any short links yet. Click the "Add New Link" button to get started.`}
             </p>
         </div>
     )

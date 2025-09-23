@@ -2,7 +2,6 @@ import { useFetchListShortUrl } from "@/lib/hooks/useFetchListShortUrl";
 import { CircularProgress } from "@/components/CircularProgress";
 import { NoDataFound } from "@/components/NoDataFound";
 import dayjs from "dayjs";
-import { Button } from "@headlessui/react";
 import { PaginateSection } from "@/components/PaginateSection";
 import { usePaginationStore } from "@/lib/stores/dashboard/paginationStore";
 import { useModalFormLinkStore } from "@/lib/stores/dashboard/modalFormLinkStore";
@@ -16,15 +15,6 @@ export const ContentHome = () => {
 
     const handleChangePage = (toPage: number) => {
         setCurrentPage(toPage);
-    }
-
-    const redirect = async (path: string) => {
-        const host = process.env.NEXT_PUBLIC_GO_HOST
-        try {
-            return await fetch(host + '/' + path);
-        } catch (err) {
-            console.log(err);
-        }
     }
 
     const copyToClipboard = async (text: string) => {

@@ -1,5 +1,5 @@
 import React, { FC } from 'react'
-import { UseFormRegister } from "react-hook-form";
+import { RegisterOptions, UseFormRegister, UseFormRegisterReturn } from "react-hook-form";
 import { Field, Input, Label } from "@headlessui/react";
 import clsx from "clsx";
 

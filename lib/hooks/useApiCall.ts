@@ -2,10 +2,10 @@ import { useCallback } from 'react';
 import { TokenManager } from '../utils/tokenManager';
 import { useAuth } from '../context/AuthContext';
 
-interface ApiCallOptions {
+interface ApiCallOptions<T = any> {
     method?: 'GET' | 'POST' | 'PUT' | 'DELETE' | 'PATCH';
     headers?: Record<string, string>;
-    body?: any;
+    body?: T | null;
     requiresAuth?: boolean;
 }
 

@@ -1,9 +1,9 @@
-import { Dialog, DialogBackdrop, DialogPanel, DialogTitle, Transition } from '@headlessui/react'
-import React, { FC, Fragment, type JSX } from 'react';
+import { Dialog, DialogBackdrop, DialogPanel } from '@headlessui/react'
+import React, { FC, type JSX } from 'react';
 
 type ParamModalIndex = {
     isOpen: boolean
-    onClose: () => any
+    onClose: (value: boolean) => void
     children: JSX.Element
 }
 

@@ -100,25 +100,3 @@ const generatePages = (totalPages: number, currentPage: number, rangePage: numbe
         );
     });
 }
-
-const generateListPages = (totalPages: number, rangePage: number,) => {
-    const pages: Array<number> = [];
-    const endRange: number = totalPages - rangePage;
-
-    if (totalPages <= rangePage || totalPages <= endRange) {
-        for (let i = 1; i <= totalPages; i++) {
-            pages.push(i);
-        }
-    } else {
-        for (let i = 1; i <= rangePage; i++) {
-            pages.push(i);
-        }
-
-        for (let i = endRange; i <= totalPages; i++) {
-            pages.push(i);
-        }
-    }
-
-    return pages;
-}
-
