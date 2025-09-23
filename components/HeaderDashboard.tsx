@@ -28,10 +28,10 @@ const HeaderDashboard: FC<HeaderParam> = ({ title }) => {
     }, [user?.role?.name]);
 
     return (
-        <header className='h-16 bg-gray-900/95 backdrop-blur-sm border-b border-gray-800 sticky top-0 z-50'>
+        <header className='h-16 bg-gray-900/95 backdrop-blur-xs border-b border-gray-800 sticky top-0 z-50'>
             <div className='max-w-7xl mx-auto px-6 h-full flex items-center justify-between'>
                 <div className='flex items-center gap-3'>
-                    <div className='w-8 h-8 bg-gradient-to-br from-sky-400 to-sky-600 rounded-lg flex items-center justify-center'>
+                    <div className='w-8 h-8 bg-linear-to-br from-sky-400 to-sky-600 rounded-lg flex items-center justify-center'>
                         <svg className="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M13.828 10.172a4 4 0 00-5.656 0l-4 4a4 4 0 105.656 5.656l1.102-1.102m-.758-4.899a4 4 0 005.656 0l4-4a4 4 0 00-5.656-5.656l-1.1 1.1" />
                         </svg>
@@ -42,7 +42,7 @@ const HeaderDashboard: FC<HeaderParam> = ({ title }) => {
                 <div className='flex items-center gap-3'>
                     <Menu as="div" className="relative">
                         <MenuButton className="flex items-center gap-3 px-3 py-1 rounded-xl bg-gray-800/50 border border-gray-700 hover:bg-gray-800 transition-all duration-200">
-                            <div className='w-8 h-8 bg-gradient-to-br from-sky-400 to-sky-600 rounded-full flex items-center justify-center'>
+                            <div className='w-8 h-8 bg-linear-to-br from-sky-400 to-sky-600 rounded-full flex items-center justify-center'>
                                 <span className='font-semibold text-white text-sm'>
                                     {user?.name ? user.name.charAt(0).toUpperCase() : 'U'}
                                 </span>

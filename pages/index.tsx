@@ -13,7 +13,7 @@ function Home() {
     const { user } = useAuth()
 
     return (
-        <div className="min-h-screen bg-gradient-to-br from-gray-900 via-gray-800 to-gray-900">
+        <div className="min-h-screen bg-linear-to-br from-gray-900 via-gray-800 to-gray-900">
             <HeadHtml title='Dashboard' />
 
             {/* Background decorative elements */}
@@ -37,7 +37,7 @@ function Home() {
 
                         <button
                             onClick={() => setOpen()}
-                            className='inline-flex items-center gap-2 bg-gradient-to-r from-sky-600 to-sky-700 hover:from-sky-700 hover:to-sky-800 text-white font-semibold px-6 py-3 rounded-xl transition-all duration-200 transform hover:scale-105 active:scale-95 shadow-lg hover:shadow-sky-500/25'
+                            className='inline-flex items-center gap-2 bg-linear-to-r from-sky-600 to-sky-700 hover:from-sky-700 hover:to-sky-800 text-white font-semibold px-6 py-3 rounded-xl transition-all duration-200 transform hover:scale-105 active:scale-95 shadow-lg hover:shadow-sky-500/25'
                         >
                             <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6" />
@@ -47,7 +47,7 @@ function Home() {
                     </div>
 
                     {/* Content */}
-                    <div className="bg-gray-900/30 backdrop-blur-sm rounded-3xl border border-gray-700/50 p-4">
+                    <div className="bg-gray-900/30 backdrop-blur-xs rounded-3xl border border-gray-700/50 p-4">
                         <ContentHome />
                     </div>
                 </div>

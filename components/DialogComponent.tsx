@@ -28,8 +28,8 @@ export const DialogComponent: FC<DialogComponentProps> = ({
 }) => {
     return (
         <Transition appear show={isOpen}>
-            <Dialog as="div" className="relative z-50 focus:outline-none" onClose={() => onClickClose()}>
-                <div className="fixed inset-0 bg-black/60 backdrop-blur-sm z-50"></div>
+            <Dialog as="div" className="relative z-50 focus:outline-hidden" onClose={() => onClickClose()}>
+                <div className="fixed inset-0 bg-black/60 backdrop-blur-xs z-50"></div>
                 <div className="fixed inset-0 z-50 w-screen overflow-y-auto">
                     <div className="flex min-h-full items-center justify-center p-4">
                         <TransitionChild
