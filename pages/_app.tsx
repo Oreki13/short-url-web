@@ -15,7 +15,7 @@ export default function App({ Component, pageProps }: AppProps) {
   }, [router.isReady])
 
   // Skip redirect on login page to prevent conflicts
-  const skipRedirectOnNoToken = router.pathname === '/login'
+  const skipRedirectOnNoToken = ['/register', '/login'].includes(router.pathname)
 
   if (!isReady) {
     return <LoadingSpinner message="Initializing..." fullScreen />

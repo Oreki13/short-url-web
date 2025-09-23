@@ -12,6 +12,16 @@ const Auth = {
             console.log(e);
         })
     },
+    register: async (url: string, { arg }: { arg: { name: string, email: string, password: string } }) => {
+        return Fetcher(url, {
+            method: 'POST',
+            body: JSON.stringify(arg),
+            headers: DefaultHeader(),
+            cache: "no-cache",
+        }).then(res => res).catch((e) => {
+            console.log(e);
+        })
+    },
     verify: async (url: string) => {
         return Fetcher(url, {
             method: "GET",
@@ -33,7 +43,6 @@ const Auth = {
 }
 
 export default Auth
-
 
 
 

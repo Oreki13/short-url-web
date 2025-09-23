@@ -2,6 +2,7 @@ import HeadHtml from '@/components/HeadHtml'
 import { TextInput } from '@/components/TextInput'
 import { DialogComponent } from "@/components/DialogComponent";
 import { NextPage } from "next";
+import Link from "next/link";
 import { useAuth } from "@/lib/context/AuthContext";
 import { useFetchLogin } from "@/lib/hooks/useFetchLogin";
 import { useEffect } from 'react';
@@ -122,6 +123,15 @@ const Login: NextPage = () => {
                                 </>
                             )}
                         </button>
+
+                        <div className="text-center">
+                            <Link
+                                href="/register"
+                                className="inline-flex items-center justify-center w-full bg-transparent border border-sky-500/40 text-sky-300 hover:text-white hover:border-sky-400 font-semibold py-3 px-6 rounded-xl transition-all duration-200 hover:bg-sky-500/10"
+                            >
+                                Create an account
+                            </Link>
+                        </div>
                     </form>
 
                     {/* Footer */}
@@ -147,4 +157,3 @@ const Login: NextPage = () => {
 }
 
 export default Login;
-
