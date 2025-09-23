@@ -95,7 +95,7 @@ export const ModalFormLink = () => {
                             <div className="flex-1">
                                 <input
                                     {...register("Path")}
-                                    className="w-full bg-transparent px-4 py-3 text-white text-sm focus:outline-none placeholder-gray-500"
+                                    className="w-full bg-transparent px-4 py-3 text-white text-sm focus:outline-hidden placeholder-gray-500"
                                     placeholder="your-custom-path"
                                 />
                             </div>
@@ -113,7 +113,7 @@ export const ModalFormLink = () => {
                         <button
                             type="submit"
                             disabled={isLoading || isSubmitting}
-                            className="w-full bg-gradient-to-r from-sky-600 to-sky-700 hover:from-sky-700 hover:to-sky-800 disabled:from-gray-600 disabled:to-gray-700 text-white font-semibold py-3 px-6 rounded-xl transition-all duration-200 transform hover:scale-[1.02] active:scale-[0.98] disabled:opacity-50 disabled:cursor-not-allowed disabled:transform-none flex items-center justify-center gap-2"
+                            className="w-full bg-linear-to-r from-sky-600 to-sky-700 hover:from-sky-700 hover:to-sky-800 disabled:from-gray-600 disabled:to-gray-700 text-white font-semibold py-3 px-6 rounded-xl transition-all duration-200 transform hover:scale-[1.02] active:scale-[0.98] disabled:opacity-50 disabled:cursor-not-allowed disabled:transform-none flex items-center justify-center gap-2"
                         >
                             {isLoading || isSubmitting ? (
                                 <>

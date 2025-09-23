@@ -29,7 +29,7 @@ export const TextInput: FC<TextInputParam> = ({
                 type={type}
                 className={clsx(
                     'block w-full rounded-xl border border-gray-600 bg-gray-800/50 py-3 px-4 text-sm text-white placeholder-gray-400',
-                    'focus:outline-none focus:ring-2 focus:ring-sky-500 focus:border-transparent transition-all duration-200',
+                    'focus:outline-hidden focus:ring-2 focus:ring-sky-500 focus:border-transparent transition-all duration-200',
                     'hover:border-gray-500'
                 )}
             />

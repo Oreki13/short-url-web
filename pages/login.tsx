@@ -32,7 +32,7 @@ const Login: NextPage = () => {
     // Show loading while checking authentication or during login
     if (isLoading || (isAuthenticated && !isLoading)) {
         return (
-            <div className="min-h-screen bg-gradient-to-br from-gray-900 via-gray-800 to-gray-900 flex items-center justify-center p-6">
+            <div className="min-h-screen bg-linear-to-br from-gray-900 via-gray-800 to-gray-900 flex items-center justify-center p-6">
                 <HeadHtml title='Loading...' />
                 <div className="relative w-full max-w-md">
                     <div className="backdrop-blur-xl bg-white/5 border border-white/10 rounded-3xl p-8 shadow-2xl">
@@ -54,7 +54,7 @@ const Login: NextPage = () => {
     }
 
     return (
-        <div className="min-h-screen bg-gradient-to-br from-gray-900 via-gray-800 to-gray-900 flex items-center justify-center p-6">
+        <div className="min-h-screen bg-linear-to-br from-gray-900 via-gray-800 to-gray-900 flex items-center justify-center p-6">
             <HeadHtml title='Login' />
 
             {/* Background decorative elements */}
@@ -99,7 +99,7 @@ const Login: NextPage = () => {
                         <button
                             type='submit'
                             disabled={isSubmitting || isLoginLoading}
-                            className="w-full bg-gradient-to-r from-sky-600 to-sky-700 hover:from-sky-700 hover:to-sky-800 
+                            className="w-full bg-linear-to-r from-sky-600 to-sky-700 hover:from-sky-700 hover:to-sky-800 
                                      text-white font-semibold py-3 px-6 rounded-xl transition-all duration-200 
                                      transform hover:scale-[1.02] active:scale-[0.98] disabled:opacity-50 
                                      disabled:cursor-not-allowed disabled:transform-none shadow-lg 

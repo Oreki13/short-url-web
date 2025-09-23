@@ -84,7 +84,7 @@ const ActivityPage = () => {
     };
 
     return (
-        <div className="min-h-screen bg-gradient-to-br from-gray-900 via-gray-800 to-gray-900">
+        <div className="min-h-screen bg-linear-to-br from-gray-900 via-gray-800 to-gray-900">
             <HeadHtml title='Activity Log' />
 
             <div className="absolute inset-0 overflow-hidden pointer-events-none">
@@ -113,7 +113,7 @@ const ActivityPage = () => {
                         </button>
                     </div>
 
-                    <div className='bg-gray-900/40 backdrop-blur-sm border border-gray-800 rounded-3xl overflow-hidden shadow-xl shadow-black/20'>
+                    <div className='bg-gray-900/40 backdrop-blur-xs border border-gray-800 rounded-3xl overflow-hidden shadow-xl shadow-black/20'>
                         <div className='border-b border-gray-800 p-4 sm:p-6'>
                             <form
                                 onSubmit={handleSearchSubmit}
@@ -131,7 +131,7 @@ const ActivityPage = () => {
                                                 value={searchValue}
                                                 onChange={(event) => setSearchValue(event.target.value)}
                                                 placeholder='Search activity description or IP...'
-                                                className='bg-transparent w-full text-sm text-white placeholder:text-gray-600 focus:outline-none'
+                                                className='bg-transparent w-full text-sm text-white placeholder:text-gray-600 focus:outline-hidden'
                                             />
                                         </div>
                                     </div>
@@ -142,7 +142,7 @@ const ActivityPage = () => {
                                             <select
                                                 value={filters.activity_type ?? 'ALL'}
                                                 onChange={(event) => handleActivityTypeChange(event.target.value)}
-                                                className='w-full appearance-none bg-gray-900 border border-gray-700 text-sm text-gray-200 rounded-xl px-3 py-2 focus:outline-none focus:border-sky-500'
+                                                className='w-full appearance-none bg-gray-900 border border-gray-700 text-sm text-gray-200 rounded-xl px-3 py-2 focus:outline-hidden focus:border-sky-500'
                                             >
                                                 {activityTypeOptions.map((type) => (
                                                     <option key={type} value={type}>
@@ -164,7 +164,7 @@ const ActivityPage = () => {
                                             <select
                                                 value={filters.sort ?? 'desc'}
                                                 onChange={(event) => handleSortChange(event.target.value as 'asc' | 'desc')}
-                                                className='w-full appearance-none bg-gray-900 border border-gray-700 text-sm text-gray-200 rounded-xl px-3 py-2 focus:outline-none focus:border-sky-500'
+                                                className='w-full appearance-none bg-gray-900 border border-gray-700 text-sm text-gray-200 rounded-xl px-3 py-2 focus:outline-hidden focus:border-sky-500'
                                             >
                                                 <option value='desc'>Newest first</option>
                                                 <option value='asc'>Oldest first</option>
@@ -183,7 +183,7 @@ const ActivityPage = () => {
                                             <select
                                                 value={filters.limit ?? '10'}
                                                 onChange={(event) => handleLimitChange(event.target.value)}
-                                                className='w-full appearance-none bg-gray-900 border border-gray-700 text-sm text-gray-200 rounded-xl px-3 py-2 focus:outline-none focus:border-sky-500'
+                                                className='w-full appearance-none bg-gray-900 border border-gray-700 text-sm text-gray-200 rounded-xl px-3 py-2 focus:outline-hidden focus:border-sky-500'
                                             >
                                                 {['10', '20', '50', '100'].map((limitOption) => (
                                                     <option key={limitOption} value={limitOption}>
@@ -202,7 +202,7 @@ const ActivityPage = () => {
 
                                 <button
                                     type='submit'
-                                    className='inline-flex items-center justify-center gap-2 bg-gradient-to-r from-sky-600 to-sky-700 hover:from-sky-700 hover:to-sky-800 text-white font-semibold px-6 py-2.5 rounded-xl transition-all duration-200'
+                                    className='inline-flex items-center justify-center gap-2 bg-linear-to-r from-sky-600 to-sky-700 hover:from-sky-700 hover:to-sky-800 text-white font-semibold px-6 py-2.5 rounded-xl transition-all duration-200'
                                 >
                                     <svg className='w-4 h-4' fill='none' stroke='currentColor' viewBox='0 0 24 24'>
                                         <path strokeLinecap='round' strokeLinejoin='round' strokeWidth='2' d='M6 18L18 6M6 6l12 12' />
@@ -214,7 +214,7 @@ const ActivityPage = () => {
 
                         <div className='relative overflow-x-auto'>
                             {isBusy && (
-                                <div className='absolute inset-0 flex items-center justify-center bg-gray-900/60 backdrop-blur-sm z-10'>
+                                <div className='absolute inset-0 flex items-center justify-center bg-gray-900/60 backdrop-blur-xs z-10'>
                                     <LoadingSpinner message='Fetching activities...' size='sm' />
                                 </div>
                             )}

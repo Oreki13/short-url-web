@@ -24,13 +24,13 @@ export const LoadingSpinner: React.FC<LoadingSpinnerProps> = ({
     };
 
     const containerClasses = fullScreen
-        ? "min-h-screen bg-gradient-to-br from-gray-900 via-gray-800 to-gray-900 flex items-center justify-center"
+        ? "min-h-screen bg-linear-to-br from-gray-900 via-gray-800 to-gray-900 flex items-center justify-center"
         : "flex items-center justify-center p-8";
 
     return (
         <div className={containerClasses}>
             <div className="text-center">
-                <div className="inline-flex items-center gap-3 bg-gray-900/30 backdrop-blur-sm rounded-3xl border border-gray-700/50 p-8">
+                <div className="inline-flex items-center gap-3 bg-gray-900/30 backdrop-blur-xs rounded-3xl border border-gray-700/50 p-8">
                     <svg
                         className={`animate-spin ${sizeClasses[size]} text-sky-400`}
                         fill="none"
