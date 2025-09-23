@@ -3,21 +3,14 @@ import { useRouter } from 'next/router';
 import { useCheckUserLogin } from '../hooks/useCheckUserLogin';
 import { TokenManager } from '../utils/tokenManager';
 import { LoadingSpinner } from '@/components/LoadingSpinner';
-
-interface User {
-    // Define user properties based on your API response
-    id?: string;
-    email?: string;
-    name?: string;
-    // Add other user properties as needed
-}
+import { UserDetail } from '@/type/User';
 
 interface AuthContextType {
-    user: User | null;
+    user: UserDetail | null;
     isLoading: boolean;
     isAuthenticated: boolean;
     error: string | null;
-    login: (token: string, userData?: User, redirectTo?: string) => Promise<void>;
+    login: (token: string, userData?: UserDetail, redirectTo?: string) => Promise<void>;
     logout: () => void;
     refreshAuth: () => void;
 }
@@ -34,14 +27,14 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({
     skipRedirectOnNoToken = false
 }) => {
     const router = useRouter();
-    const [user, setUser] = useState<User | null>(null);
+    const [user, setUser] = useState<UserDetail | null>(null);
     const [isNavigating, setIsNavigating] = useState(false);
     const [isLoggingOut, setIsLoggingOut] = useState(false);
     const { isLoading, isAuthenticated, user: authUser, error, recheck } = useCheckUserLogin(skipRedirectOnNoToken || isLoggingOut);
     // Disable token refresh to prevent circular dependency and loading issues
     // const { forceRefresh } = useTokenRefresh({ enabled: isAuthenticated === true });
 
-    const login = async (token: string, userData?: User, redirectTo: string = '/') => {
+    const login = async (token: string, userData?: UserDetail, redirectTo: string = '/') => {
         try {
             setIsNavigating(true);
 
@@ -65,10 +58,16 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({
 
             // Verify the new token and fetch user data if needed
             // This will trigger useCheckUserLogin to revalidate and potentially fetch user data
-            await recheck();
+            recheck().catch((error) => {
+                console.error('Auth revalidation failed after login:', error);
+            });
 
             // Navigate to dashboard or specified route
-            await router.push(redirectTo);
+            const navigationResult = await router.push(redirectTo);
+
+            if (typeof navigationResult === 'boolean' && !navigationResult) {
+                window.location.href = redirectTo;
+            }
 
         } catch (error) {
             console.error('Login navigation error:', error);
@@ -115,10 +114,20 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({
 
     // Update user data when authentication succeeds and we have user data from API
     useEffect(() => {
-        if (isAuthenticated && authUser && !user && !isLoggingOut) {
-            setUser(authUser);
+        if (isAuthenticated && authUser && !isLoggingOut) {
+            setUser((prev) => {
+                if (!prev) {
+                    return authUser;
+                }
+
+                if (prev.id !== authUser.id || prev.updatedAt !== authUser.updatedAt) {
+                    return { ...prev, ...authUser };
+                }
+
+                return prev;
+            });
         }
-    }, [isAuthenticated, authUser, user, isLoggingOut]);
+    }, [isAuthenticated, authUser, isLoggingOut]);
 
     const contextValue: AuthContextType = {
         user,

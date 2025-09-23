@@ -2,15 +2,15 @@ import { useRouter } from "next/router";
 import ApiEndpoint from "@/lib/helpers/api_endpoint";
 import Auth from "@/lib/provider/auth";
 import useSWR from "swr";
-import { useCallback, useEffect, useState } from "react";
+import { useCallback, useEffect, useMemo, useState } from "react";
 import { ApiResponse } from "@/type/ApiResponse";
 import { TokenManager } from "../utils/tokenManager";
+import UserProvider from "@/lib/provider/user";
+import { UserDetail } from "@/type/User";
 
-interface AuthState {
-    isLoading: boolean;
-    isAuthenticated: boolean;
-    user: any | null;
-    error: string | null;
+interface AuthenticatedUserPayload {
+    verification: ApiResponse;
+    user: UserDetail;
 }
 
 export const useCheckUserLogin = (skipRedirectOnNoToken: boolean = false) => {
@@ -33,9 +33,33 @@ export const useCheckUserLogin = (skipRedirectOnNoToken: boolean = false) => {
     }, [router, skipRedirectOnNoToken]);
 
     // Use SWR only when we have a token
+    const fetchAuthenticatedUser = useCallback(async (): Promise<AuthenticatedUserPayload> => {
+        const verification = await Auth.verify(ApiEndpoint.verify);
+
+        if (!verification || verification.status !== "OK") {
+            throw new Error(verification?.message || 'Authentication failed');
+        }
+
+        const userId = TokenManager.getUserIdFromAccessToken();
+        if (!userId) {
+            throw new Error('Unable to determine user id from token');
+        }
+
+        const userResponse = await UserProvider.getUserDetail(userId);
+
+        if (!userResponse || userResponse.status !== 'OK' || !userResponse.data) {
+            throw new Error(userResponse?.message || 'Unable to fetch user detail');
+        }
+
+        return {
+            verification,
+            user: userResponse.data,
+        };
+    }, []);
+
     const { data, error, isLoading, mutate } = useSWR(
-        shouldFetch ? ApiEndpoint.verify : null,
-        Auth.verify,
+        shouldFetch ? 'auth-user-detail' : null,
+        fetchAuthenticatedUser,
         {
             revalidateOnFocus: false,
             revalidateOnReconnect: true,
@@ -49,8 +73,8 @@ export const useCheckUserLogin = (skipRedirectOnNoToken: boolean = false) => {
                     router.push('/login');
                 }
             },
-            onSuccess: (data: ApiResponse) => {
-                if (!data || data.status !== "OK") {
+            onSuccess: (data: AuthenticatedUserPayload) => {
+                if (!data || data.verification?.status !== "OK") {
                     TokenManager.clearTokens();
                     setShouldFetch(false);
                     if (!skipRedirectOnNoToken) {
@@ -77,11 +101,17 @@ export const useCheckUserLogin = (skipRedirectOnNoToken: boolean = false) => {
         shouldFetch &&
         !error &&
         data &&
-        data.status === "OK"
+        data.verification?.status === "OK"
     );
 
     // Extract user data from API response if available
-    const userData = isAuthenticated && data?.data ? data.data : null;
+    const userData = useMemo(() => {
+        if (!isAuthenticated || !data?.user) {
+            return null;
+        }
+
+        return data.user;
+    }, [data, isAuthenticated]);
 
     return {
         isLoading: shouldFetch && isLoading && !skipRedirectOnNoToken,
