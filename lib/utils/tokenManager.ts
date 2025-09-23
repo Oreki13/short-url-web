@@ -1,4 +1,5 @@
 import { getCookie, setCookie } from 'cookies-next';
+import { Buffer } from 'buffer';
 
 interface TokenRefreshResponse {
     status: string;
@@ -23,6 +24,37 @@ export class TokenManager {
     private static readonly ACCESS_TOKEN_KEY = 'accessToken';
     private static readonly REFRESH_TOKEN_KEY = 'refreshToken';
     private static readonly API_REFRESH_ENDPOINT = '/api/v1/auth/refresh-token';
+
+    private static decodeBase64Url(input: string): string {
+        const normalized = input.replace(/-/g, '+').replace(/_/g, '/');
+        const pad = normalized.length % 4;
+        const padded = normalized + (pad ? '='.repeat(4 - pad) : '');
+
+        try {
+            if (typeof window === 'undefined') {
+                return Buffer.from(padded, 'base64').toString('utf-8');
+            }
+            return atob(padded);
+        } catch (error) {
+            console.warn('Failed to decode base64 string:', error);
+            throw error;
+        }
+    }
+
+    private static decodeTokenPayload<T = Record<string, unknown>>(token: string): T | null {
+        try {
+            const parts = token.split('.');
+            if (parts.length !== 3) {
+                return null;
+            }
+
+            const payload = this.decodeBase64Url(parts[1]);
+            return JSON.parse(payload) as T;
+        } catch (error) {
+            console.warn('Failed to parse token payload:', error);
+            return null;
+        }
+    }
 
     /**
      * Validate JWT token structure and expiry
@@ -81,6 +113,24 @@ export class TokenManager {
         }
 
         return token;
+    }
+
+    static getAccessTokenPayload<T = Record<string, unknown>>(): T | null {
+        const token = getCookie(TokenManager.ACCESS_TOKEN_KEY) as string | undefined;
+        if (!token) {
+            return null;
+        }
+
+        return this.decodeTokenPayload<T>(token);
+    }
+
+    static getUserIdFromAccessToken(): string | null {
+        const payload = this.getAccessTokenPayload<{ id?: string }>();
+        if (!payload || typeof payload.id !== 'string') {
+            return null;
+        }
+
+        return payload.id;
     }
 
     /**
